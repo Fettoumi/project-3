@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kabchi DZ - أسهل طريقة باش تشري الكبش تاعك</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'eid-green': '#22c55e',
+                        'eid-beige': '#f5f5dc',
+                        'eid-light-green': '#dcfce7',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .page { display: none; }
+        .page.active { display: block; }
+        .rtl { direction: rtl; }
+        .ltr { direction: ltr; }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .dropdown { position: relative; display: inline-block; }
+        .dropdown-content { display: none; position: absolute; background-color: white; min-width: 200px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); z-index: 1; border-radius: 8px; }
+        .dropdown:hover .dropdown-content { display: block; }
+        .dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block; }
+        .dropdown-content a:hover { background-color: #dcfce7; }
+    </style>
+</head>
+<body class="bg-white font-sans">
+    <div class="fixed top-4 right-4 z-50">
+        <button id="langToggle" class="bg-eid-green text-white px-3 py-1 rounded-full text-sm hover:bg-green-600 transition-colors">
+            <i class="fas fa-language mr-1"></i>
+            <span id="langText">EN</span>
+        </button>
+    </div>
+
+    <div class="fixed top-4 left-4 z-50">
+        <button onclick="showPage('notifications')" class="bg-white text-eid-green p-3 rounded-full shadow-lg hover:bg-eid-light-green transition-colors relative">
+            <i class="fas fa-bell text-xl"></i>
+            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+        </button>
+    </div>
+
+    <nav class="bg-white shadow-lg sticky top-0 z-40">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-sheep text-eid-green text-2xl"></i>
+                    <h1 class="text-2xl font-bold text-eid-green">Kabchi DZ</h1>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#" onclick="showPage('landing')" class="nav-link text-gray-700 hover:text-eid-green transition-colors" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+                    <a href="#" onclick="showPage('map')" class="nav-link text-gray-700 hover:text-eid-green transition-colors" data-ar="الخريطة" data-en="Map">الخريطة</a>
+                    <a href="#" onclick="showPage('sheep')" class="nav-link text-gray-700 hover:text-eid-green transition-colors" data-ar="الكباش" data-en="Sheep">الكباش</a>
+                    <a href="#" onclick="showPage('purchase')" class="nav-link text-gray-700 hover:text-eid-green transition-colors" data-ar="الطلب" data-en="Order">الطلب</a>
+                    
+                    <div class="dropdown">
+                        <a href="#" class="nav-link text-gray-700 hover:text-eid-green transition-colors" data-ar="الخدمات" data-en="Services">
+                            الخدمات <i class="fas fa-chevron-down ml-1"></i>
+                        </a>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="showPage('services')" data-ar="خدمات إضافية" data-en="Additional Services">خدمات إضافية</a>
+                            <a href="#" onclick="showPage('booking')" data-ar="حجز ذكي" data-en="Smart Booking">حجز ذكي</a>
+                            <a href="#" onclick="showPage('tracking')" data-ar="تتبع الطلب" data-en="Order Tracking">تتبع الطلب</a>
+                            <a href="#" onclick="showPage('recycling')" data-ar="إعادة تدوير الصوف" data-en="Wool Recycling">إعادة تدوير الصوف</a>
+                        </div>
+                    </div>
+                    
+                    <a href="#" onclick="showPage('donate')" class="nav-link text-gray-700 hover:text-eid-green transition-colors" data-ar="التبرع" data-en="Donate">التبرع</a>
+                    <a href="#" onclick="showPage('ratings')" class="nav-link text-gray-700 hover:text-eid-green transition-colors" data-ar="التقييمات" data-en="Reviews">التقييمات</a>
+                    <a href="#" onclick="showPage('admin')" class="nav-link text-gray-700 hover:text-eid-green transition-colors" data-ar="الإدارة" data-en="Admin">الإدارة</a>
+                </div>
+                <button id="mobileMenu" class="md:hidden">
+                    <i class="fas fa-bars text-2xl text-eid-green"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenuContent" class="hidden md:hidden bg-white shadow-lg">
+        <div class="px-4 py-2 space-y-2">
+            <a href="#" onclick="showPage('landing')" class="block nav-link text-gray-700 hover:text-eid-green py-2" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+            <a href="#" onclick="showPage('map')" class="block nav-link text-gray-700 hover:text-eid-green py-2" data-ar="الخريطة" data-en="Map">الخريطة</a>
+            <a href="#" onclick="showPage('sheep')" class="block nav-link text-gray-700 hover:text-eid-green py-2" data-ar="الكباش" data-en="Sheep">الكباش</a>
+            <a href="#" onclick="showPage('purchase')" class="block nav-link text-gray-700 hover:text-eid-green py-2" data-ar="الطلب" data-en="Order">الطلب</a>
+            <a href="#" onclick="showPage('services')" class="block nav-link text-gray-700 hover:text-eid-green py-2" data-ar="خدمات إضافية" data-en="Additional Services">خدمات إضافية</a>
+            <a href="#" onclick="showPage('booking')" class="block nav-link text-gray-700 hover:text-eid-green py-2" data-ar="حجز ذكي" data-en="Smart Booking">حجز ذكي</a>
+            <a href="#" onclick="showPage('tracking')" class="block nav-link text-gray-700 hover:text-eid-green py-2" data-ar="تتبع الطلب" data-en="Order Tracking">تتبع الطلب</a>
+            <a href="#" onclick="showPage('recycling')" class="block nav-link text-gray-700 hover:text-eid-green py-2" data-ar="إعادة تدوير الصوف" data-en="Wool Recycling">إعادة تدوير الصوف</a>
+            <a href="#" onclick="showPage('notifications')" class="block nav-link text-gray-700 hover:text-eid-green py-2" data-ar="الإشعارات" data-en="Notifications">الإشعارات</a>
+            <a href="#" onclick="showPage('donate')" class="block nav-link text-gray-700 hover:text-eid-green py-2" data-ar="التبرع" data-en="Donate">التبرع</a>
+            <a href="#" onclick="showPage('ratings')" class="block nav-link text-gray-700 hover:text-eid-green py-2" data-ar="التقييمات" data-en="Reviews">التقييمات</a>
+        </div>
+    </div>
+
+    <!-- Landing Page -->
+    <div id="landing" class="page active fade-in">
+        <section class="bg-gradient-to-br from-eid-light-green to-eid-beige py-20">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-eid-green mb-4" data-ar="أسهل طريقة باش تشري الكبش تاعك" data-en="The Easiest Way to Buy Your Eid Sheep">أسهل طريقة باش تشري الكبش تاعك</h1>
+                <p class="text-xl text-gray-700 mb-8" data-ar="منصة رقمية تساعدك في العثور على أفضل الكباش لعيد الأضحى" data-en="A digital platform to help you find the best sheep for Eid Al-Adha">منصة رقمية تساعدك في العثور على أفضل الكباش لعيد الأضحى</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="showPage('sheep')" class="bg-eid-green text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors">
+                        <i class="fas fa-sheep mr-2"></i>
+                        <span data-ar="تصفح الكباش" data-en="Browse Sheep">تصفح الكباش</span>
+                    </button>
+                    <button onclick="showPage('map')" class="bg-white text-eid-green border-2 border-eid-green px-8 py-4 rounded-lg text-lg font-semibold hover:bg-eid-green hover:text-white transition-colors">
+                        <i class="fas fa-map-marker-alt mr-2"></i>
+                        <span data-ar="ابدأ الآن" data-en="Start Now">ابدأ الآن</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12" data-ar="خدماتنا" data-en="Our Services">خدماتنا</h2>
+                <div class="grid md:grid-cols-4 gap-6">
+                    <div onclick="showPage('services')" class="cursor-pointer text-center p-6 rounded-lg bg-eid-light-green hover:bg-eid-green hover:text-white transition-all transform hover:scale-105">
+                        <i class="fas fa-cut text-4xl mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2" data-ar="خدمات إضافية" data-en="Additional Services">خدمات إضافية</h3>
+                        <p class="text-sm" data-ar="ذبح، تقطيع، تعبئة" data-en="Slaughter, Cutting, Packaging">ذبح، تقطيع، تعبئة</p>
+                    </div>
+                    <div onclick="showPage('recycling')" class="cursor-pointer text-center p-6 rounded-lg bg-eid-beige hover:bg-eid-green hover:text-white transition-all transform hover:scale-105">
+                        <i class="fas fa-recycle text-4xl mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2" data-ar="إعادة تدوير الصوف" data-en="Wool Recycling">إعادة تدوير الصوف</h3>
+                        <p class="text-sm" data-ar="برنامج بيئي مع مكافآت" data-en="Environmental program with rewards">برنامج بيئي مع مكافآت</p>
+                    </div>
+                    <div onclick="showPage('booking')" class="cursor-pointer text-center p-6 rounded-lg bg-eid-light-green hover:bg-eid-green hover:text-white transition-all transform hover:scale-105">
+                        <i class="fas fa-calendar-check text-4xl mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2" data-ar="حجز ذكي" data-en="Smart Booking">حجز ذكي</h3>
+                        <p class="text-sm" data-ar="احجز كبشك مسبقاً" data-en="Book your sheep in advance">احجز كبشك مسبقاً</p>
+                    </div>
+                    <div onclick="showPage('tracking')" class="cursor-pointer text-center p-6 rounded-lg bg-eid-beige hover:bg-eid-green hover:text-white transition-all transform hover:scale-105">
+                        <i class="fas fa-truck text-4xl mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2" data-ar="تتبع الطلب" data-en="Order Tracking">تتبع الطلب</h3>
+                        <p class="text-sm" data-ar="تابع طلبك لحظة بلحظة" data-en="Track your order in real-time">تابع طلبك لحظة بلحظة</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-12" data-ar="لماذا تختار كبشي دي زد؟" data-en="Why Choose Kabchi DZ?">لماذا تختار كبشي دي زد؟</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center p-6 rounded-lg bg-white shadow-md">
+                        <i class="fas fa-map-marked-alt text-4xl text-eid-green mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2" data-ar="خريطة تفاعلية" data-en="Interactive Map">خريطة تفاعلية</h3>
+                        <p class="text-gray-600" data-ar="اعثر على أقرب نقاط البيع في ولايتك" data-en="Find the nearest sales points in your wilaya">اعثر على أقرب نقاط البيع في ولايتك</p>
+                    </div>
+                    <div class="text-center p-6 rounded-lg bg-white shadow-md">
+                        <i class="fas fa-truck text-4xl text-eid-green mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2" data-ar="توصيل للمنزل" data-en="Home Delivery">توصيل للمنزل</h3>
+                        <p class="text-gray-600" data-ar="خدمة توصيل سريعة وآمنة" data-en="Fast and secure delivery service">خدمة توصيل سريعة وآمنة</p>
+                    </div>
+                    <div class="text-center p-6 rounded-lg bg-white shadow-md">
+                        <i class="fas fa-star text-4xl text-eid-green mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2" data-ar="تقييمات موثوقة" data-en="Trusted Reviews">تقييمات موثوقة</h3>
+                        <p class="text-gray-600" data-ar="آراء العملاء الحقيقية" data-en="Real customer reviews">آراء العملاء الحقيقية</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="map" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-eid-green mb-6" data-ar="خريطة نقاط البيع" data-en="Sales Points Map">خريطة نقاط البيع</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <select class="flex-1 p-3 border rounded-lg">
+                        <option data-ar="اختر الولاية" data-en="Choose Wilaya">اختر الولاية</option>
+                        <option>الجزائر</option>
+                        <option>وهران</option>
+                        <option>قسنطينة</option>
+                        <option>عنابة</option>
+                    </select>
+                    <button class="bg-eid-green text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors">
+                        <i class="fas fa-location-arrow mr-2"></i>
+                        <span data-ar="استخدم موقعي" data-en="Use My Location">استخدم موقعي</span>
+                    </button>
+                </div>
+            </div>
+
+<div class="bg-gray-200 rounded-lg h-96 mb-6 flex items-center justify-center">
+    <div class="text-center">
+        <i class="fas fa-map text-6xl text-gray-400 mb-4"></i>
+        <p class="text-gray-600">خريطة تفاعلية ستظهر هنا</p>
+    </div>
+</div>
+
+
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-xl font-semibold mb-4" data-ar="مؤشر الازدحام" data-en="Congestion Indicator">مؤشر الازدحام</h3>
+                <div class="flex flex-wrap gap-4">
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+                        <span data-ar="قليل الازدحام" data-en="Low Traffic">قليل الازدحام</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-yellow-500 rounded-full mr-2"></div>
+                        <span data-ar="متوسط الازدحام" data-en="Medium Traffic">متوسط الازدحام</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
+                        <span data-ar="مزدحم جداً" data-en="High Traffic">مزدحم جداً</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sheep" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-eid-green mb-6" data-ar="تصفح الكباش" data-en="Browse Sheep">تصفح الكباش</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <div class="grid md:grid-cols-4 gap-4">
+                    <select class="p-3 border rounded-lg">
+                        <option data-ar="السعر" data-en="Price">السعر</option>
+                        <option data-ar="أقل من 30,000 دج" data-en="Less than 30,000 DA">أقل من 30,000 دج</option>
+                        <option data-ar="30,000 - 50,000 دج" data-en="30,000 - 50,000 DA">30,000 - 50,000 دج</option>
+                        <option data-ar="أكثر من 50,000 دج" data-en="More than 50,000 DA">أكثر من 50,000 دج</option>
+                    </select>
+                    <select class="p-3 border rounded-lg">
+                        <option data-ar="الوزن" data-en="Weight">الوزن</option>
+                        <option data-ar="أقل من 40 كغ" data-en="Less than 40 kg">أقل من 40 كغ</option>
+                        <option data-ar="40-60 كغ" data-en="40-60 kg">40-60 كغ</option>
+                        <option data-ar="أكثر من 60 كغ" data-en="More than 60 kg">أكثر من 60 كغ</option>
+                    </select>
+                    <select class="p-3 border rounded-lg">
+                        <option data-ar="النوع" data-en="Breed">النوع</option>
+                        <option data-ar="أولا جلال" data-en="Ouled Jlal">أولا جلال</option>
+                        <option data-ar="رامبي" data-en="Rambi">رامبي</option>
+                        <option data-ar="سيداون" data-en="Sidawn">سيداون</option>
+                    </select>
+                    <button class="bg-eid-green text-white p-3 rounded-lg hover:bg-green-600 transition-colors">
+                        <i class="fas fa-filter mr-2"></i>
+                        <span data-ar="تطبيق" data-en="Apply">تطبيق</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <img src="11057836_909786955782880_441852655133206084_n.jpg" alt="Sheep" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold mb-2" data-ar="كبش أولا جلال ممتاز" data-en="Premium Awassi Ram">كبش أولا جلال ممتاز</h3>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600" data-ar="الوزن: 55 كغ" data-en="Weight: 55 kg">الوزن: 55 كغ</span>
+                            <span class="text-2xl font-bold text-eid-green">45,000 دج</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="reserveSheep(1)" class="flex-1 bg-eid-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors">
+                                <span data-ar="احجز" data-en="Reserve">احجز</span>
+                            </button>
+                            <button class="flex-1 border border-eid-green text-eid-green py-2 rounded-lg hover:bg-eid-green hover:text-white transition-colors">
+                                <span data-ar="تفاصيل" data-en="Details">تفاصيل</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <img src="images.jpg" alt="Sheep" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold mb-2" data-ar="كبش رامبي أصيل" data-en="Authentic Raman Ram">كبش رامبي أصيل</h3>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600" data-ar="الوزن: 48 كغ" data-en="Weight: 48 kg">الوزن: 48 كغ</span>
+                            <span class="text-2xl font-bold text-eid-green">38,000 دج</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="reserveSheep(2)" class="flex-1 bg-eid-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors">
+                                <span data-ar="احجز" data-en="Reserve">احجز</span>
+                            </button>
+                            <button class="flex-1 border border-eid-green text-eid-green py-2 rounded-lg hover:bg-eid-green hover:text-white transition-colors">
+                                <span data-ar="تفاصيل" data-en="Details">تفاصيل</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <img src="image.jpg.jpg" alt="Sheep" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-xl font-semibold mb-2" data-ar="كبش سيداون كبير" data-en="Large Barbary Ram">كبش سيداون كبير</h3>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600" data-ar="الوزن: 62 كغ" data-en="Weight: 62 kg">الوزن: 62 كغ</span>
+                            <span class="text-2xl font-bold text-eid-green">52,000 دج</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="reserveSheep(3)" class="flex-1 bg-eid-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors">
+                                <span data-ar="احجز" data-en="Reserve">احجز</span>
+                            </button>
+                            <button class="flex-1 border border-eid-green text-eid-green py-2 rounded-lg hover:bg-eid-green hover:text-white transition-colors">
+                                <span data-ar="تفاصيل" data-en="Details">تفاصيل</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Page -->
+    <div id="purchase" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-eid-green mb-6" data-ar="إتمام الطلب" data-en="Complete Order">إتمام الطلب</h2>
+            
+            <!-- Purchase Options -->
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-6 border-2 border-transparent hover:border-eid-green transition-colors cursor-pointer" onclick="selectPurchaseType('onsite')">
+                    <div class="text-center">
+                        <i class="fas fa-store text-4xl text-eid-green mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2" data-ar="شراء في الموقع" data-en="On-site Purchase">شراء في الموقع</h3>
+                        <p class="text-gray-600" data-ar="اذهب إلى نقطة البيع واشتري مباشرة" data-en="Go to sales point and buy directly">اذهب إلى نقطة البيع واشتري مباشرة</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 border-2 border-transparent hover:border-eid-green transition-colors cursor-pointer" onclick="selectPurchaseType('online')">
+                    <div class="text-center">
+                        <i class="fas fa-truck text-4xl text-eid-green mb-4"></i>
+                        <h3 class="text-xl font-semibold mb-2" data-ar="طلب أونلاين" data-en="Online Order">طلب أونلاين</h3>
+                        <p class="text-gray-600" data-ar="اطلب عبر الإنترنت مع التوصيل للمنزل" data-en="Order online with home delivery">اطلب عبر الإنترنت مع التوصيل للمنزل</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Form -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-semibold mb-6" data-ar="معلومات الطلب" data-en="Order Information">معلومات الطلب</h3>
+                <form class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2" data-ar="الاسم الكامل" data-en="Full Name">الاسم الكامل</label>
+                            <input type="text" class="w-full p-3 border rounded-lg" placeholder="أدخل اسمك الكامل">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" data-ar="رقم الهاتف" data-en="Phone Number">رقم الهاتف</label>
+                            <input type="tel" class="w-full p-3 border rounded-lg" placeholder="0555 123 456">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2" data-ar="الولاية" data-en="Wilaya">الولاية</label>
+                            <select class="w-full p-3 border rounded-lg">
+                                <option data-ar="اختر الولاية" data-en="Choose Wilaya">اختر الولاية</option>
+                                <option>الجزائر</option>
+                                <option>وهران</option>
+                                <option>قسنطينة</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" data-ar="نوع الكبش" data-en="Sheep Type">نوع الكبش</label>
+                            <select class="w-full p-3 border rounded-lg">
+                                <option data-ar="اختر النوع" data-en="Choose Type">اختر النوع</option>
+                                <option data-ar="عواسي" data-en="Awassi">عواسي</option>
+                                <option data-ar="رمان" data-en="Raman">رمان</option>
+                                <option data-ar="بربري" data-en="Barbary">بربري</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" data-ar="العنوان" data-en="Address">العنوان</label>
+                        <textarea class="w-full p-3 border rounded-lg" rows="3" placeholder="أدخل عنوانك الكامل"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" data-ar="طريقة الدفع" data-en="Payment Method">طريقة الدفع</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center">
+                                <input type="radio" name="payment" value="cash" class="mr-2">
+                                <span data-ar="الدفع عند الاستلام" data-en="Cash on Delivery">الدفع عند الاستلام</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="payment" value="card" class="mr-2">
+                                <span data-ar="بطاقة ائتمان" data-en="Credit Card">بطاقة ائتمان</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Services Section -->
+                    <div class="border-t pt-4">
+                        <h4 class="text-lg font-semibold mb-4" data-ar="خدمات إضافية (اختيارية)" data-en="Additional Services (Optional)">خدمات إضافية (اختيارية)</h4>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-eid-light-green cursor-pointer">
+                                <input type="checkbox" name="services" value="slaughter" class="mr-2">
+                                <div>
+                                    <span class="font-medium" data-ar="الذبح" data-en="Slaughter">الذبح</span>
+                                    <p class="text-sm text-gray-600">5,000 دج</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-eid-light-green cursor-pointer">
+                                <input type="checkbox" name="services" value="cutting" class="mr-2">
+                                <div>
+                                    <span class="font-medium" data-ar="التقطيع" data-en="Cutting">التقطيع</span>
+                                    <p class="text-sm text-gray-600">3,000 دج</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-eid-light-green cursor-pointer">
+                                <input type="checkbox" name="services" value="packaging" class="mr-2">
+                                <div>
+                                    <span class="font-medium" data-ar="التعبئة" data-en="Packaging">التعبئة</span>
+                                    <p class="text-sm text-gray-600">2,000 دج</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-eid-green text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors">
+                        <i class="fas fa-check mr-2"></i>
+                        <span data-ar="تأكيد الطلب" data-en="Confirm Order">تأكيد الطلب</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="tracking" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-eid-green mb-6" data-ar="تتبع الطلب" data-en="Order Tracking">تتبع الطلب</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="flex gap-4">
+                    <input type="text" placeholder="أدخل رقم الطلب" class="flex-1 p-3 border rounded-lg">
+                    <button onclick="trackOrder()" class="bg-eid-green text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors">
+                        <i class="fas fa-search mr-2"></i>
+                        <span data-ar="تتبع" data-en="Track">تتبع</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-semibold mb-6" data-ar="حالة الطلب #1234" data-en="Order Status #1234">حالة الطلب #1234</h3>
+                <div class="space-y-6">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-eid-green rounded-full flex items-center justify-center text-white">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <h4 class="font-semibold" data-ar="تم تأكيد الطلب" data-en="Order Confirmed">تم تأكيد الطلب</h4>
+                            <p class="text-gray-600 text-sm">2024-01-15 10:30</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-eid-green rounded-full flex items-center justify-center text-white">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <h4 class="font-semibold" data-ar="قيد التحضير" data-en="Preparing">قيد التحضير</h4>
+                            <p class="text-gray-600 text-sm">2024-01-15 14:00</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <h4 class="font-semibold text-gray-500" data-ar="في الطريق" data-en="On the Way">في الطريق</h4>
+                            <p class="text-gray-400 text-sm" data-ar="متوقع: 2024-01-16 09:00" data-en="Expected: 2024-01-16 09:00">متوقع: 2024-01-16 09:00</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-gray-600">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <h4 class="font-semibold text-gray-500" data-ar="تم التسليم" data-en="Delivered">تم التسليم</h4>
+                            <p class="text-gray-400 text-sm" data-ar="متوقع: 2024-01-16 10:00" data-en="Expected: 2024-01-16 10:00">متوقع: 2024-01-16 10:00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ratings" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-eid-green mb-6" data-ar="التقييمات والآراء" data-en="Ratings & Reviews">التقييمات والآراء</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="text-center">
+                    <div class="text-6xl font-bold text-eid-green mb-2">4.8</div>
+                    <div class="flex justify-center mb-2">
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                        <i class="fas fa-star text-yellow-400"></i>
+                    </div>
+                    <p class="text-gray-600" data-ar="من أصل 1,234 تقييم" data-en="Out of 1,234 reviews">من أصل 1,234 تقييم</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h3 class="text-2xl font-semibold mb-4" data-ar="اكتب تقييمك" data-en="Write Your Review">اكتب تقييمك</h3>
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 mb-2" data-ar="التقييم" data-en="Rating">التقييم</label>
+                        <div class="flex space-x-1">
+                            <i class="fas fa-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating(1)"></i>
+                            <i class="fas fa-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating(2)"></i>
+                            <i class="fas fa-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating(3)"></i>
+                            <i class="fas fa-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating(4)"></i>
+                            <i class="fas fa-star text-2xl text-gray-300 hover:text-yellow-400 cursor-pointer" onclick="setRating(5)"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" data-ar="تعليقك" data-en="Your Comment">تعليقك</label>
+                        <textarea class="w-full p-3 border rounded-lg" rows="4" placeholder="شاركنا تجربتك..."></textarea>
+                    </div>
+                    <button type="submit" class="bg-eid-green text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        <span data-ar="إرسال التقييم" data-en="Submit Review">إرسال التقييم</span>
+                    </button>
+                </form>
+            </div>
+
+
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-eid-green rounded-full flex items-center justify-center text-white font-bold">أ</div>
+                        <div class="ml-4">
+                            <h4 class="font-semibold">أحمد محمد</h4>
+                            <div class="flex">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">خدمة ممتازة والكبش كان بجودة عالية. التوصيل كان سريع والفريق محترف جداً.</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-eid-green rounded-full flex items-center justify-center text-white font-bold">ف</div>
+                        <div class="ml-4">
+                            <h4 class="font-semibold">فاطمة علي</h4>
+                            <div class="flex">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-700">تجربة جيدة بشكل عام. الموقع سهل الاستخدام والأسعار معقولة.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-eid-green mb-6" data-ar="لوحة الإدارة" data-en="Admin Dashboard">لوحة الإدارة</h2>
+            
+            <div class="grid md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-sheep text-3xl text-eid-green mb-2"></i>
+                    <h3 class="text-2xl font-bold">1,234</h3>
+                    <p class="text-gray-600" data-ar="إجمالي الكباش" data-en="Total Sheep">إجمالي الكباش</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-shopping-cart text-3xl text-eid-green mb-2"></i>
+                    <h3 class="text-2xl font-bold">567</h3>
+                    <p class="text-gray-600" data-ar="الطلبات" data-en="Orders">الطلبات</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-users text-3xl text-eid-green mb-2"></i>
+                    <h3 class="text-2xl font-bold">890</h3>
+                    <p class="text-gray-600" data-ar="العملاء" data-en="Customers">العملاء</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-money-bill text-3xl text-eid-green mb-2"></i>
+                    <h3 class="text-2xl font-bold">2.5M</h3>
+                    <p class="text-gray-600" data-ar="الإيرادات (دج)" data-en="Revenue (DA)">الإيرادات (دج)</p>
+                </div>
+            </div>
+
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4" data-ar="إدارة نقاط البيع" data-en="Manage Sales Points">إدارة نقاط البيع</h3>
+                    <div class="space-y-2">
+                        <button class="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i class="fas fa-plus text-eid-green mr-2"></i>
+                            <span data-ar="إضافة نقطة بيع جديدة" data-en="Add New Sales Point">إضافة نقطة بيع جديدة</span>
+                        </button>
+                        <button class="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i class="fas fa-edit text-eid-green mr-2"></i>
+                            <span data-ar="تعديل نقاط البيع" data-en="Edit Sales Points">تعديل نقاط البيع</span>
+                        </button>
+                        <button class="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i class="fas fa-traffic-light text-eid-green mr-2"></i>
+                            <span data-ar="تحديث حالة الازدحام" data-en="Update Congestion Status">تحديث حالة الازدحام</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4" data-ar="إدارة الطلبات" data-en="Manage Orders">إدارة الطلبات</h3>
+                    <div class="space-y-2">
+                        <button class="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i class="fas fa-list text-eid-green mr-2"></i>
+                            <span data-ar="عرض جميع الطلبات" data-en="View All Orders">عرض جميع الطلبات</span>
+                        </button>
+                        <button class="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i class="fas fa-clock text-eid-green mr-2"></i>
+                            <span data-ar="الطلبات المعلقة" data-en="Pending Orders">الطلبات المعلقة</span>
+                        </button>
+                        <button class="w-full text-left p-3 hover:bg-gray-100 rounded-lg transition-colors">
+                            <i class="fas fa-chart-bar text-eid-green mr-2"></i>
+                            <span data-ar="إحصائيات الطلبات" data-en="Order Statistics">إحصائيات الطلبات</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="booking" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-eid-green mb-6" data-ar="حجز ذكي" data-en="Smart Booking">حجز ذكي</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-2xl font-semibold mb-6" data-ar="احجز كبشك مسبقاً" data-en="Book Your Sheep in Advance">احجز كبشك مسبقاً</h3>
+                <form class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2" data-ar="تاريخ الاستلام" data-en="Pickup Date">تاريخ الاستلام</label>
+                            <input type="date" class="w-full p-3 border rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" data-ar="وقت الاستلام" data-en="Pickup Time">وقت الاستلام</label>
+                            <select class="w-full p-3 border rounded-lg">
+                                <option>08:00 - 10:00</option>
+                                <option>10:00 - 12:00</option>
+                                <option>14:00 - 16:00</option>
+                                <option>16:00 - 18:00</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" data-ar="نوع الكبش المطلوب" data-en="Required Sheep Type">نوع الكبش المطلوب</label>
+                        <select class="w-full p-3 border rounded-lg">
+                            <option data-ar="عواسي" data-en="Awassi">عواسي</option>
+                            <option data-ar="رمان" data-en="Raman">رمان</option>
+                            <option data-ar="بربري" data-en="Barbary">بربري</option>
+                        </select>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-gray-700 mb-2" data-ar="الوزن المفضل" data-en="Preferred Weight">الوزن المفضل</label>
+                            <select class="w-full p-3 border rounded-lg">
+                                <option data-ar="40-50 كغ" data-en="40-50 kg">40-50 كغ</option>
+                                <option data-ar="50-60 كغ" data-en="50-60 kg">50-60 كغ</option>
+                                <option data-ar="60+ كغ" data-en="60+ kg">60+ كغ</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2" data-ar="الميزانية" data-en="Budget">الميزانية</label>
+                            <select class="w-full p-3 border rounded-lg">
+                                <option data-ar="30,000 - 40,000 دج" data-en="30,000 - 40,000 DA">30,000 - 40,000 دج</option>
+                                <option data-ar="40,000 - 50,000 دج" data-en="40,000 - 50,000 DA">40,000 - 50,000 دج</option>
+                                <option data-ar="50,000+ دج" data-en="50,000+ DA">50,000+ دج</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 mb-2" data-ar="ملاحظات إضافية" data-en="Additional Notes">ملاحظات إضافية</label>
+                        <textarea class="w-full p-3 border rounded-lg" rows="3" placeholder="أي متطلبات خاصة..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-eid-green text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors">
+                        <i class="fas fa-calendar-check mr-2"></i>
+                        <span data-ar="تأكيد الحجز" data-en="Confirm Booking">تأكيد الحجز</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="bg-eid-light-green rounded-lg p-6 mt-6">
+                <h4 class="text-lg font-semibold mb-2" data-ar="مميزات الحجز المسبق" data-en="Pre-booking Benefits">مميزات الحجز المسبق</h4>
+                <ul class="space-y-2">
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-eid-green mr-2"></i>
+                        <span data-ar="ضمان توفر الكبش المطلوب" data-en="Guaranteed availability of desired sheep">ضمان توفر الكبش المطلوب</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-eid-green mr-2"></i>
+                        <span data-ar="تجنب الازدحام والانتظار" data-en="Avoid crowds and waiting">تجنب الازدحام والانتظار</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-check text-eid-green mr-2"></i>
+                        <span data-ar="خصم 5% على السعر النهائي" data-en="5% discount on final price">خصم 5% على السعر النهائي</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="services" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-eid-green mb-6" data-ar="خدمات إضافية" data-en="Additional Services">خدمات إضافية</h2>
+            
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-cut text-4xl text-eid-green mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2" data-ar="الذبح" data-en="Slaughter">الذبح</h3>
+                    <p class="text-gray-600 mb-4" data-ar="خدمة ذ  data-en="Slaughter">الذبح</h3>
+                    <p class="text-gray-600 mb-4" data-ar="خدمة ذبح احترافية وصحية" data-en="Professional and hygienic slaughter service">خدمة ذبح احترافية وصحية</p>
+                    <p class="text-2xl font-bold text-eid-green mb-4">5,000 دج</p>
+                    <button onclick="addToCart('slaughter')" class="w-full bg-eid-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        <span data-ar="إضافة للسلة" data-en="Add to Cart">إضافة للسلة</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-knife-kitchen text-4xl text-eid-green mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2" data-ar="التقطيع" data-en="Cutting">التقطيع</h3>
+                    <p class="text-gray-600 mb-4" data-ar="تقطيع اللحم حسب الطلب" data-en="Custom meat cutting">تقطيع اللحم حسب الطلب</p>
+                    <p class="text-2xl font-bold text-eid-green mb-4">3,000 دج</p>
+                    <button onclick="addToCart('cutting')" class="w-full bg-eid-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        <span data-ar="إضافة للسلة" data-en="Add to Cart">إضافة للسلة</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-box text-4xl text-eid-green mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2" data-ar="التعبئة" data-en="Packaging">التعبئة</h3>
+                    <p class="text-gray-600 mb-4" data-ar="تعبئة صحية ومحكمة" data-en="Hygienic and secure packaging">تعبئة صحية ومحكمة</p>
+                    <p class="text-2xl font-bold text-eid-green mb-4">2,000 دج</p>
+                    <button onclick="addToCart('packaging')" class="w-full bg-eid-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        <span data-ar="إضافة للسلة" data-en="Add to Cart">إضافة للسلة</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 class="text-2xl font-semibold mb-4" data-ar="تفاصيل الخدمات" data-en="Service Details">تفاصيل الخدمات</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div>
+                        <h4 class="font-semibold mb-2" data-ar="خدمة الذبح" data-en="Slaughter Service">خدمة الذبح</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li data-ar="• ذبح حلال وفقاً للشريعة" data-en="• Halal slaughter according to Islamic law">• ذبح حلال وفقاً للشريعة</li>
+                            <li data-ar="• معدات معقمة ونظيفة" data-en="• Sterilized and clean equipment">• معدات معقمة ونظيفة</li>
+                            <li data-ar="• خبراء مدربون" data-en="• Trained experts">• خبراء مدربون</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2" data-ar="خدمة التقطيع" data-en="Cutting Service">خدمة التقطيع</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li data-ar="• تقطيع حسب الطلب" data-en="• Custom cutting as requested">• تقطيع حسب الطلب</li>
+                            <li data-ar="• قطع مختلفة الأحجام" data-en="• Different sized pieces">• قطع مختلفة الأحجام</li>
+                            <li data-ar="• فصل العظام إذا طُلب" data-en="• Bone separation if requested">• فصل العظام إذا طُلب</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold mb-2" data-ar="خدمة التعبئة" data-en="Packaging Service">خدمة التعبئة</h4>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li data-ar="• أكياس صحية معتمدة" data-en="• Certified hygienic bags">• أكياس صحية معتمدة</li>
+                            <li data-ar="• تعبئة محكمة الإغلاق" data-en="• Vacuum sealed packaging">• تعبئة محكمة الإغلاق</li>
+                            <li data-ar="• ملصقات الوزن والتاريخ" data-en="• Weight and date labels">• ملصقات الوزن والتاريخ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-eid-light-green rounded-lg p-6">
+                <h3 class="text-2xl font-semibold mb-4" data-ar="عروض الباقات" data-en="Package Deals">عروض الباقات</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-white rounded-lg p-4">
+                        <h4 class="font-semibold mb-2" data-ar="الباقة الكاملة" data-en="Complete Package">الباقة الكاملة</h4>
+                        <p class="text-sm text-gray-600 mb-2" data-ar="ذبح + تقطيع + تعبئة" data-en="Slaughter + Cutting + Packaging">ذبح + تقطيع + تعبئة</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg line-through text-gray-400">10,000 دج</span>
+                            <span class="text-xl font-bold text-eid-green">8,500 دج</span>
+                        </div>
+                        <button onclick="addToCart('complete-package')" class="w-full mt-2 bg-eid-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors">
+                            <span data-ar="وفر 1,500 دج" data-en="Save 1,500 DA">وفر 1,500 دج</span>
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-lg p-4">
+                        <h4 class="font-semibold mb-2" data-ar="باقة التحضير" data-en="Preparation Package">باقة التحضير</h4>
+                        <p class="text-sm text-gray-600 mb-2" data-ar="تقطيع + تعبئة" data-en="Cutting + Packaging">تقطيع + تعبئة</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg line-through text-gray-400">5,000 دج</span>
+                            <span class="text-xl font-bold text-eid-green">4,500 دج</span>
+                        </div>
+                        <button onclick="addToCart('prep-package')" class="w-full mt-2 bg-eid-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors">
+                            <span data-ar="وفر 500 دج" data-en="Save 500 DA">وفر 500 دج</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="donate" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-eid-green mb-6" data-ar="تبرع بكبش" data-en="Donate a Sheep">تبرع بكبش</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-2xl font-semibold mb-4" data-ar="تبرع بكبش كامل" data-en="Donate Full Sheep">تبرع بكبش كامل</h3>
+                    <p class="text-gray-600 mb-4" data-ar="ساهم في إسعاد الأسر المحتاجة" data-en="Help bring joy to families in need">ساهم في إسعاد الأسر المحتاجة</p>
+                    <div class="space-y-4">
+                        <div class="border rounded-lg p-4 hover:border-eid-green cursor-pointer transition-colors" onclick="selectDonation('small')">
+                            <h4 class="font-semibold" data-ar="كبش صغير" data-en="Small Sheep">كبش صغير</h4>
+                            <p class="text-2xl font-bold text-eid-green">35,000 دج</p>
+                            <p class="text-sm text-gray-600" data-ar="يكفي لعائلة من 4-5 أفراد" data-en="Sufficient for family of 4-5 members">يكفي لعائلة من 4-5 أفراد</p>
+                        </div>
+                        <div class="border rounded-lg p-4 hover:border-eid-green cursor-pointer transition-colors" onclick="selectDonation('medium')">
+                            <h4 class="font-semibold" data-ar="كبش متوسط" data-en="Medium Sheep">كبش متوسط</h4>
+                            <p class="text-2xl font-bold text-eid-green">45,000 دج</p>
+                            <p class="text-sm text-gray-600" data-ar="يكفي لعائلة من 6-7 أفراد" data-en="Sufficient for family of 6-7 members">يكفي لعائلة من 6-7 أفراد</p>
+                        </div>
+                        <div class="border rounded-lg p-4 hover:border-eid-green cursor-pointer transition-colors" onclick="selectDonation('large')">
+                            <h4 class="font-semibold" data-ar="كبش كبير" data-en="Large Sheep">كبش كبير</h4>
+                            <p class="text-2xl font-bold text-eid-green">55,000 دج</p>
+                            <p class="text-sm text-gray-600" data-ar="يكفي لعائلة من 8+ أفراد" data-en="Sufficient for family of 8+ members">يكفي لعائلة من 8+ أفراد</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-2xl font-semibold mb-4" data-ar="انضم لمجموعة التبرع" data-en="Join Charity Pool">انضم لمجموعة التبرع</h3>
+                    <p class="text-gray-600 mb-4" data-ar="شارك مع آخرين في تبرع جماعي" data-en="Share with others in group donation">شارك مع آخرين في تبرع جماعي</p>
+                    <div class="bg-eid-light-green rounded-lg p-4 mb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span data-ar="الهدف: 45,000 دج" data-en="Goal: 45,000 DA">الهدف: 45,000 دج</span>
+                            <span data-ar="المجموع: 32,000 دج" data-en="Total: 32,000 DA">المجموع: 32,000 دج</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-eid-green h-2 rounded-full" style="width: 71%"></div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-2" data-ar="باقي 13,000 دج" data-en="13,000 DA remaining">باقي 13,000 دج</p>
+                    </div>
+                    <div class="space-y-2">
+                        <button onclick="donate(5000)" class="w-full bg-eid-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors">
+                            <span data-ar="تبرع بـ 5,000 دج" data-en="Donate 5,000 DA">تبرع بـ 5,000 دج</span>
+                        </button>
+                        <button onclick="donate(10000)" class="w-full bg-eid-green text-white py-2 rounded-lg hover:bg-green-600 transition-colors">
+                            <span data-ar="تبرع بـ 10,000 دج" data-en="Donate 10,000 DA">تبرع بـ 10,000 دج</span>
+                        </button>
+                        <button onclick="showCustomDonation()" class="w-full border border-eid-green text-eid-green py-2 rounded-lg hover:bg-eid-green hover:text-white transition-colors">
+                            <span data-ar="مبلغ مخصص" data-en="Custom Amount">مبلغ مخصص</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 mt-6">
+                <h3 class="text-2xl font-semibold mb-4" data-ar="شركاؤنا في الخير" data-en="Our Charity Partners">شركاؤنا في الخير</h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="text-center p-4 border rounded-lg">
+                        <i class="fas fa-heart text-3xl text-red-500 mb-2"></i>
+                        <h4 class="font-semibold" data-ar="الهلال الأحمر الجزائري" data-en="Algerian Red Crescent">الهلال الأحمر الجزائري</h4>
+                        <p class="text-sm text-gray-600" data-ar="منظمة إنسانية معتمدة" data-en="Certified humanitarian organization">منظمة إنسانية معتمدة</p>
+                    </div>
+                    <div class="text-center p-4 border rounded-lg">
+                        <i class="fas fa-hands-helping text-3xl text-blue-500 mb-2"></i>
+                        <h4 class="font-semibold" data-ar="جمعية البر والإحسان" data-en="Charity & Benevolence Association">جمعية البر والإحسان</h4>
+                        <p class="text-sm text-gray-600" data-ar="تساعد الأسر المحتاجة" data-en="Helps families in need">تساعد الأسر المحتاجة</p>
+                    </div>
+                    <div class="text-center p-4 border rounded-lg">
+                        <i class="fas fa-home text-3xl text-green-500 mb-2"></i>
+                        <h4 class="font-semibold" data-ar="مؤسسة الأيتام" data-en="Orphans Foundation">مؤسسة الأيتام</h4>
+                        <p class="text-sm text-gray-600" data-ar="رعاية الأطفال الأيتام" data-en="Caring for orphaned children">رعاية الأطفال الأيتام</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notifications" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-eid-green mb-6" data-ar="مركز الإشعارات" data-en="Notifications Center">مركز الإشعارات</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                <h3 class="text-xl font-semibold mb-4" data-ar="إعدادات الإشعارات" data-en="Notification Settings">إعدادات الإشعارات</h3>
+                <div class="space-y-3">
+                    <label class="flex items-center justify-between">
+                        <span data-ar="العروض الجديدة" data-en="New Offers">العروض الجديدة</span>
+                        <input type="checkbox" checked class="toggle-switch">
+                    </label>
+                    <label class="flex items-center justify-between">
+                        <span data-ar="تحديثات الطلبات" data-en="Order Updates">تحديثات الطلبات</span>
+                        <input type="checkbox" checked class="toggle-switch">
+                    </label>
+                    <label class="flex items-center justify-between">
+                        <span data-ar="تنبيهات الازدحام" data-en="Congestion Alerts">تنبيهات الازدحام</span>
+                        <input type="checkbox" checked class="toggle-switch">
+                    </label>
+                    <label class="flex items-center justify-between">
+                        <span data-ar="تذكير المواعيد" data-en="Appointment Reminders">تذكير المواعيد</span>
+                        <input type="checkbox" checked class="toggle-switch">
+                    </label>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-eid-green">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-tag text-eid-green mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold" data-ar="عرض جديد!" data-en="New Offer!">عرض جديد!</h4>
+                                <p class="text-gray-600 text-sm" data-ar="خصم 15% على جميع الكباش العواسي حتى نهاية الأسبوع" data-en="15% discount on all Awassi sheep until end of week">خصم 15% على جميع الكباش العواسي حتى نهاية الأسبوع</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-gray-400">منذ ساعة</span>
+                            <button class="block text-eid-green text-sm hover:underline" data-ar="عرض التفاصيل" data-en="View Details">عرض التفاصيل</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-blue-500">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-truck text-blue-500 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold" data-ar="تحديث الطلب" data-en="Order Update">تحديث الطلب</h4>
+                                <p class="text-gray-600 text-sm" data-ar="طلبك #1234 في الطريق إليك. الوصول المتوقع: 16:00" data-en="Your order #1234 is on the way. Expected arrival: 16:00">طلبك #1234 في الطريق إليك. الوصول المتوقع: 16:00</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-gray-400">منذ 3 ساعات</span>
+                            <button onclick="showPage('tracking')" class="block text-blue-500 text-sm hover:underline" data-ar="تتبع الطلب" data-en="Track Order">تتبع الطلب</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-yellow-500">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-yellow-500 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold" data-ar="تنبيه ازدحام" data-en="Congestion Alert">تنبيه ازدحام</h4>
+                                <p class="text-gray-600 text-sm" data-ar="ازدحام متوسط في سوق الجزائر العاصمة. ننصح بالزيارة بعد الساعة 15:00" data-en="Medium congestion at Algiers market. We recommend visiting after 15:00">ازدحام متوسط في سوق الجزائر العاصمة. ننصح بالزيارة بعد الساعة 15:00</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-gray-400">منذ 5 ساعات</span>
+                            <button onclick="showPage('map')" class="block text-yellow-600 text-sm hover:underline" data-ar="عرض الخريطة" data-en="View Map">عرض الخريطة</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-purple-500">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar text-purple-500 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold" data-ar="تذكير حجز" data-en="Booking Reminder">تذكير حجز</h4>
+                                <p class="text-gray-600 text-sm" data-ar="موعد استلام كبشك غداً الساعة 10:00 في سوق الحراش" data-en="Your sheep pickup is tomorrow at 10:00 at Harrach market">موعد استلام كبشك غداً الساعة 10:00 في سوق الحراش</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-gray-400">منذ يوم</span>
+                            <button onclick="showPage('booking')" class="block text-purple-500 text-sm hover:underline" data-ar="عرض الحجز" data-en="View Booking">عرض الحجز</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md p-4 border-l-4 border-green-500">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <i class="fas fa-star text-green-500 mr-3"></i>
+                            <div>
+                                <h4 class="font-semibold" data-ar="تقييم الخدمة" data-en="Service Rating">تقييم الخدمة</h4>
+                                <p class="text-gray-600 text-sm" data-ar="كيف كانت تجربتك مع طلب #1233؟ شاركنا رأيك" data-en="How was your experience with order #1233? Share your feedback">كيف كانت تجربتك مع طلب #1233؟ شاركنا رأيك</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-gray-400">منذ يومين</span>
+                            <button onclick="showPage('ratings')" class="block text-green-500 text-sm hover:underline" data-ar="اكتب تقييم" data-en="Write Review">اكتب تقييم</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="recycling" class="page">
+        <div class="container mx-auto px-4 py-8">
+            <h2 class="text-3xl font-bold text-eid-green mb-6" data-ar="برنامج إعادة تدوير الصوف" data-en="Wool Recycling Program">برنامج إعادة تدوير الصوف</h2>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="text-center">
+                    <i class="fas fa-recycle text-6xl text-eid-green mb-4"></i>
+                    <h3 class="text-2xl font-semibold mb-4" data-ar="ساهم في حماية البيئة" data-en="Contribute to Environmental Protection">ساهم في حماية البيئة</h3>
+                    <p class="text-gray-600 mb-6" data-ar="تبرع بصوف كبشك واحصل على كيس قابل للإعادة الاستخدام ومكافآت أخرى" data-en="Donate your sheep's wool and get a reusable bag and other rewards">تبرع بصوف كبشك واحصل على كيس قابل للإعادة الاستخدام ومكافآت أخرى</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-eid-light-green rounded-lg p-6">
+                    <h4 class="text-xl font-semibold mb-4" data-ar="كيف يُستخدم الصوف؟" data-en="How is Wool Used?">كيف يُستخدم الصوف؟</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-eid-green mr-3"></i>
+                            <span data-ar="صناعة البطانيات للمحتاجين في الشتاء" data-en="Making blankets for those in need during winter">صناعة البطانيات للمحتاجين في الشتاء</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-eid-green mr-3"></i>
+                            <span data-ar="الحرف اليدوية التقليدية الجزائرية" data-en="Traditional Algerian handicrafts">الحرف اليدوية التقليدية الجزائرية</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-eid-green mr-3"></i>
+                            <span data-ar="منتجات صديقة للبيئة" data-en="Eco-friendly products">منتجات صديقة للبيئة</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check text-eid-green mr-3"></i>
+                            <span data-ar="دعم الصناعات المحلية" data-en="Supporting local industries">دعم الصناعات المحلية</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-eid-beige rounded-lg p-6">
+                    <h4 class="text-xl font-semibold mb-4" data-ar="مكافآتك" data-en="Your Rewards">مكافآتك</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-center">
+                            <i class="fas fa-gift text-eid-green mr-3"></i>
+                            <span data-ar="كيس قابل للإعادة الاستخدام مع شعار كبشي دي زد" data-en="Reusable bag with Kabchi DZ logo">كيس قابل للإعادة الاستخدام مع شعار كبشي دي زد</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-percent text-eid-green mr-3"></i>
+                            <span data-ar="خصم 10% على الطلب القادم" data-en="10% discount on next order">خصم 10% على الطلب القادم</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-certificate text-eid-green mr-3"></i>
+                            <span data-ar="شهادة تقدير بيئية رقمية" data-en="Digital environmental appreciation certificate">شهادة تقدير بيئية رقمية</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-medal text-eid-green mr-3"></i>
+                            <span data-ar="نقاط ولاء إضافية" data-en="Extra loyalty points">نقاط ولاء إضافية</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <h3 class="text-2xl font-semibold mb-6" data-ar="كيف يعمل البرنامج؟" data-en="How Does the Program Work?">كيف يعمل البرنامج؟</h3>
+                <div class="grid md:grid-cols-4 gap-4">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-eid-green rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-3">1</div>
+                        <h4 class="font-semibold mb-2" data-ar="اطلب الخدمة" data-en="Request Service">اطلب الخدمة</h4>
+                        <p class="text-sm text-gray-600" data-ar="اختر خدمة إعادة التدوير عند الطلب" data-en="Choose recycling service when ordering">اختر خدمة إعادة التدوير عند الطلب</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-eid-green rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-3">2</div>
+                        <h4 class="font-semibold mb-2" data-ar="جمع الصوف" data-en="Collect Wool">جمع الصوف</h4>
+                        <p class="text-sm text-gray-600" data-ar="فريقنا يجمع الصوف بعد الذبح" data-en="Our team collects wool after slaughter">فريقنا يجمع الصوف بعد الذبح</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-eid-green rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-3">3</div>
+                        <h4 class="font-semibold mb-2" data-ar="المعالجة" data-en="Processing">المعالجة</h4>
+                        <p class="text-sm text-gray-600" data-ar="تنظيف ومعالجة الصوف بطرق صحية" data-en="Clean and process wool hygienically">تنظيف ومعالجة الصوف بطرق صحية</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-eid-green rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-3">4</div>
+                        <h4 class="font-semibold mb-2" data-ar="المكافآت" data-en="Rewards">المكافآت</h4>
+                        <p class="text-sm text-gray-600" data-ar="احصل على مكافآتك فوراً" data-en="Get your rewards immediately">احصل على مكافآتك فوراً</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-lg p-6 mb-8">
+                <h3 class="text-2xl font-semibold mb-4" data-ar="الأثر البيئي" data-en="Environmental Impact">الأثر البيئي</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center">
+                        <i class="fas fa-leaf text-4xl text-green-600 mb-3"></i>
+                        <h4 class="font-semibold text-lg">2,500 كغ</h4>
+                        <p class="text-sm text-gray-600" data-ar="صوف تم إعادة تدويره" data-en="Wool recycled">صوف تم إعادة تدويره</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-home text-4xl text-blue-600 mb-3"></i>
+                        <h4 class="font-semibold text-lg">150</h4>
+                        <p class="text-sm text-gray-600" data-ar="عائلة استفادت من البطانيات" data-en="Families benefited from blankets">عائلة استفادت من البطانيات</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-recycle text-4xl text-purple-600 mb-3"></i>
+                        <h4 class="font-semibold text-lg">95%</h4>
+                        <p class="text-sm text-gray-600" data-ar="نسبة إعادة التدوير" data-en="Recycling rate">نسبة إعادة التدوير</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button onclick="joinRecyclingProgram()" class="bg-eid-green text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-green-600 transition-colors">
+                    <i class="fas fa-hand-holding-heart mr-2"></i>
+                    <span data-ar="أريد المشاركة في البرنامج" data-en="I Want to Join the Program">أريد المشاركة في البرنامج</span>
+                </button>
+                <p class="text-sm text-gray-600 mt-2" data-ar="مجاني تماماً ومتاح مع جميع الطلبات" data-en="Completely free and available with all orders">مجاني تماماً ومتاح مع جميع الطلبات</p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-6">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-sheep text-eid-green text-2xl"></i>
+                        <h3 class="text-xl font-bold">Kabchi DZ</h3>
+                    </div>
+                    <p class="text-gray-400" data-ar="أسهل طريقة لشراء كبش العيد في الجزائر" data-en="The easiest way to buy Eid sheep in Algeria">أسهل طريقة لشراء كبش العيد في الجزائر</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4" data-ar="روابط سريعة" data-en="Quick Links">روابط سريعة</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-eid-green transition-colors" data-ar="عن الموقع" data-en="About Us">عن الموقع</a></li>
+                        <li><a href="#" class="hover:text-eid-green transition-colors" data-ar="اتصل بنا" data-en="Contact Us">اتصل بنا</a></li>
+                        <li><a href="#" class="hover:text-eid-green transition-colors" data-ar="الأسئلة الشائعة" data-en="FAQ">الأسئلة الشائعة</a></li>
+                        <li><a href="#" class="hover:text-eid-green transition-colors" data-ar="سياسة الخصوصية" data-en="Privacy Policy">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4" data-ar="خدماتنا" data-en="Our Services">خدماتنا</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" onclick="showPage('sheep')" class="hover:text-eid-green transition-colors" data-ar="بيع الكباش" data-en="Sheep Sales">بيع الكباش</a></li>
+                        <li><a href="#" onclick="showPage('services')" class="hover:text-eid-green transition-colors" data-ar="خدمات إضافية" data-en="Additional Services">خدمات إضافية</a></li>
+                        <li><a href="#" onclick="showPage('tracking')" class="hover:text-eid-green transition-colors" data-ar="التوصيل" data-en="Delivery">التوصيل</a></li>
+                        <li><a href="#" onclick="showPage('recycling')" class="hover:text-eid-green transition-colors" data-ar="إعادة التدوير" data-en="Recycling">إعادة التدوير</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4" data-ar="تواصل معنا" data-en="Contact Us">تواصل معنا</h4>
+                    <div class="space-y-2 text-gray-400">
+                        <p><i class="fas fa-phone mr-2"></i>+213 555 123 456</p>
+                        <p><i class="fas fa-envelope mr-2"></i>info@kabchidz.com</p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>الجزائر العاصمة، الجزائر</p>
+                        <div class="flex space-x-4 mt-4">
+                            <a href="#" class="text-gray-400 hover:text-eid-green transition-colors">
+                                <i class="fab fa-facebook text-xl"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-eid-green transition-colors">
+                                <i class="fab fa-instagram text-xl"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-eid-green transition-colors">
+                                <i class="fab fa-twitter text-xl"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-eid-green transition-colors">
+                                <i class="fab fa-whatsapp text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Kabchi DZ. <span data-ar="جميع الحقوق محفوظة" data-en="All rights reserved">جميع الحقوق محفوظة</span>.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentLang = 'ar';
+        let currentPage = 'landing';
+        let cart = [];
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            const html = document.documentElement;
+            const langText = document.getElementById('langText');
+            
+            if (currentLang === 'ar') {
+                html.setAttribute('lang', 'ar');
+                html.setAttribute('dir', 'rtl');
+                langText.textContent = 'EN';
+            } else {
+                html.setAttribute('lang', 'en');
+                html.setAttribute('dir', 'ltr');
+                langText.textContent = 'AR';
+            }
+            
+            updateTexts();
+        }
+
+        function updateTexts() {
+            const elements = document.querySelectorAll('[data-ar][data-en]');
+            elements.forEach(element => {
+                if (currentLang === 'ar') {
+                    element.textContent = element.getAttribute('data-ar');
+                } else {
+                    element.textContent = element.getAttribute('data-en');
+                }
+            });
+        }
+
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                currentPage = pageId;
+            }
+            
+            const mobileMenu = document.getElementById('mobileMenuContent');
+            mobileMenu.classList.add('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenuContent');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        function selectPurchaseType(type) {
+            console.log('Selected purchase type:', type);
+        }
+
+        function reserveSheep(sheepId) {
+            alert(currentLang === 'ar' ? 'تم حجز الكبش بنجاح!' : 'Sheep reserved successfully!');
+        }
+
+        function trackOrder() {
+            const orderNumber = document.querySelector('input[placeholder*="رقم الطلب"]').value;
+            if (orderNumber) {
+                alert(currentLang === 'ar' ? 'جاري تتبع الطلب...' : 'Tracking order...');
+            } else {
+                alert(currentLang === 'ar' ? 'يرجى إدخال رقم الطلب' : 'Please enter order number');
+            }
+        }
+
+        function addToCart(service) {
+            cart.push(service);
+            alert(currentLang === 'ar' ? 'تم إضافة الخدمة للسلة!' : 'Service added to cart!');
+        }
+
+        function selectDonation(size) {
+            alert(currentLang === 'ar' ? `تم اختيار كبش ${size}` : `Selected ${size} sheep`);
+        }
+
+        function donate(amount) {
+            alert(currentLang === 'ar' ? `شكراً لتبرعك بـ ${amount} دج` : `Thank you for donating ${amount} DA`);
+        }
+
+        function showCustomDonation() {
+            const amount = prompt(currentLang === 'ar' ? 'أدخل المبلغ المطلوب:' : 'Enter donation amount:');
+            if (amount) {
+                donate(amount);
+            }
+        }
+
+        function setRating(stars) {
+            const starElements = document.querySelectorAll('.fa-star');
+            starElements.forEach((star, index) => {
+                if (index < stars) {
+                    star.classList.remove('text-gray-300');
+                    star.classList.add('text-yellow-400');
+                } else {
+                    star.classList.remove('text-yellow-400');
+                    star.classList.add('text-gray-300');
+                }
+            });
+        }
+
+        function joinRecyclingProgram() {
+            alert(currentLang === 'ar' ? 'مرحباً بك في برنامج إعادة تدوير الصوف!' : 'Welcome to the Wool Recycling Program!');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('langToggle').addEventListener('click', toggleLanguage);
+            
+            
+            document.getElementById('mobileMenu').addEventListener('click', toggleMobileMenu);
+            
+            
+            updateTexts();
+        });
+
+        function addLoadingState(button) {
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>' + (currentLang === 'ar' ? 'جاري التحميل...' : 'Loading...');
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }, 2000);
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('button[type="submit"]')) {
+                e.preventDefault();
+                addLoadingState(e.target);
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown')) {
+                document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+            }
+        });
+    </script>
+    
+</body>
+</html>
